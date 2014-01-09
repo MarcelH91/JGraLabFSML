@@ -1,0 +1,8 @@
+// JGraLab - The Java graph laboratory
+//   Version : 7.7.3
+//   Codename: Giraffatitan
+TGraph 2;
+Schema fsml.schema.FSMLSchema;
+GraphClass FSMLSchemaGraph;
+VertexClass State {id: String, initial: Boolean};
+EdgeClass Transition from State (1, 1) role fromState to State (0, *) role toState {action: String, id: String, input: String};

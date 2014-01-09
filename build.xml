@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="FSML" basedir="." default="build">
+
+	<property name="projectname" value="FSML" />
+	<property name="main" value="" />
+
+	<import file="../jgralab/common.xml" />
+
+	<property name="schema.file" value="${project.dir}/files/FSMLSchema.tg" />
+
+</project>
