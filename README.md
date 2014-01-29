@@ -1,19 +1,23 @@
 Workspace setup
 
 0. The FSML Project: Put it into your workspace.
-1. Install an AspectJ Tool (http://www.eclipse.org/ajdt/).
-2.1. JGralab: Download the JGralab project from https://github.com/JGralab/ and put it into the same workspace
-2.2. JGralab: Execute JGralab's build.xml as an ANT Build.
-3. GraphViz: Install GraphViz. Don't forget to add the location of the dot.exe file to your paths.
-4. Execute the FSML project's build.xml as an ANT Build. The build should succeed while the
-error msg says something else.
 
-A Sample of how the FSML Project works can be found at /src/fsml/FSMLMain.java
+1. Install an AspectJ Tool (http://www.eclipse.org/ajdt/).
+
+2.1. JGralab: Download the JGralab project from https://github.com/JGralab/ and put it into the same workspace
+
+2.2. JGralab: Execute JGralab's build.xml as an ANT Build.
+
+3. GraphViz: Install GraphViz. Don't forget to add the location of the dot.exe file to your paths.
+
+4. Execute the FSML project's build.xml as an ANT Build. The build should succeed while the error msg says something else.
+
+A Sample of how the FSML Project works can be found at FSML/src/fsml/FSMLMain.java
 -----------------------------------
 
 
 FSMLSchema
-The abstract Syntax is given here in a schema graph using JGralab. It's
+The abstract Syntax is given here in a schemagraph using JGralab. It's
 based on JGralab's grUML technology, which is close to UML's layers.
 I.)There exists a schema for grUML, which could be compared to UML's MOF. 
 II.) Instances of that meta schema are schemagraphs like in FSMLSchema.tg. They
@@ -38,11 +42,12 @@ the matching input-attribute.
 II.) Using Schema-Extension
 The second one can be found at fsml.semantics.extending.SESimulator. Before
 looking at this implementation, you have to take a look at some AspectJ in the
-package fsml.schema.ext. There the basic Schema-Implementation is extended by
-two operations. The first one adds the method getNextTransition(String input) to
-the State-class using aspect oriented programming. This is done via AspectJ, because
-we don't want to change the actual schema-implementation, but we still want to
-extend the schema with operations. Now a state-object is able to calculate the
-next active transition and thus the next active state. The second method
-mentioned in the aspect adds the method getOutput() to the Transition-class in
-order to let Transition-objects compute their own output individually. 
+package fsml.semantics.extending.FSMLSchemaExtensionGen.aj. The basic Schema-
+Implementation is extended by two operations. The first one adds the method 
+getNextTransition(String input) to the State-class using aspect oriented 
+programming. This is done via AspectJ, becausewe don't want to change the 
+actual schema-implementation, but we still want toextend the schema with 
+operations. Now a state-object is able to calculate thenext active transition
+ and thus the next active state. The second methodmentioned in the aspect adds
+the method getOutput() to the Transition-class inorder to let Transition-objects 
+compute their own output individually. 
