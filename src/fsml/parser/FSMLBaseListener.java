@@ -1,20 +1,25 @@
 package fsml.parser;
-// Generated from FSML.egl by ANTLR 4.0
+// Generated from FSML.g by ANTLR 4.1
 
 import java.util.HashMap;
-import java.util.InputMismatchException;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import de.uni_koblenz.jgralab.ImplementationType;
+import fsml.exception.FSMMismatchException;
 import fsml.schema.FSMLSchema;
 import fsml.schema.FSMLSchemaGraph;
 import fsml.schema.State;
 import fsml.schema.Transition;
 
+/**
+ * This class provides an empty implementation of {@link FSMLListener},
+ * which can be extended to create a listener which only needs to handle a subset
+ * of the available methods.
+ */
 public class FSMLBaseListener implements FSMLListener {
 	
 	private FSMLSchemaGraph graph;
@@ -29,8 +34,28 @@ public class FSMLBaseListener implements FSMLListener {
 	private int createdstatenumber;
 	private int realstatenumber;
 	
-	@Override public void enterId(FSMLParser.IdContext ctx) { }
-	@Override public void exitId(FSMLParser.IdContext ctx) { 
+	/**
+	 * The default implementation does nothing.
+	 */
+	@Override 
+	public void enterId(@NotNull FSMLParser.IdContext ctx) { }
+	
+	/**
+	 * Differs 4 cases
+	 * I.) input = "" -> it's a state
+	 * I.I) the state is part of stateMap -> the state was created already
+	 * 		state is set to the saved state from the map.
+	 * I.II) the method creates the state
+	 * II) input != "" -> it's a transition's target
+	 * II.I) the target already exists in statemap and can be retrieved
+	 * II.II) the target doesn't exist yet and has to be created as a dump
+	 * 
+	 * some additional measure via createdstatenumber and realstatenumber
+	 * is initiated here in order to provide consistency. The transition's
+	 * target has to exist.
+	 * 
+	 */
+	@Override public void exitId(@NotNull FSMLParser.IdContext ctx) {
 		if(input.equals("")){
 			if(stateMap.containsKey(ctx.Name().getText())){
 				state = stateMap.get(ctx.Name().getText());
@@ -52,17 +77,41 @@ public class FSMLBaseListener implements FSMLListener {
 		}
 	}
 
-	@Override public void enterInput(FSMLParser.InputContext ctx) { }
-	@Override public void exitInput(FSMLParser.InputContext ctx) {
+	/**
+	 * The default implementation does nothing.
+	 */
+	@Override 
+	public void enterInput(@NotNull FSMLParser.InputContext ctx) { }
+	
+	/**
+	 * sets input to the parsed string.
+	 */
+	@Override 
+	public void exitInput(@NotNull FSMLParser.InputContext ctx) {
 		input = ctx.Name().getText();
 	}
 
-	@Override public void enterInitial(FSMLParser.InitialContext ctx) { }
-	@Override public void exitInitial(FSMLParser.InitialContext ctx) {
-		initial = true;
+	/**
+	 * The default implementation does nothing.
+	 */
+	@Override 
+	public void enterInitial(@NotNull FSMLParser.InitialContext ctx) {
 	}
 	
-	@Override public void enterFsm(FSMLParser.FsmContext ctx) {
+	/**
+	 * assigns true to initial
+	 */
+	@Override 
+	public void exitInitial(@NotNull FSMLParser.InitialContext ctx) {
+		initial = true;
+	}
+
+	/**
+	 * Creates the schemagraph-object FSMLSchema and initialises some
+	 * global variables.
+	 */
+	@Override 
+	public void enterFsm(@NotNull FSMLParser.FsmContext ctx) {
 		FSMLSchema schema = FSMLSchema.instance();
 		graph = schema.createFSMLSchemaGraph(ImplementationType.STANDARD);
 		stateMap = new HashMap<String, State>();
@@ -70,28 +119,63 @@ public class FSMLBaseListener implements FSMLListener {
 		createdstatenumber = 0;
 		realstatenumber = 0;
 	}
-	@Override public void exitFsm(FSMLParser.FsmContext ctx) { 
+	/**
+	 * Checks wether there are as many created states than real states
+	 * and throws an exception if the constraint doesn't hold.
+	 */
+	@Override 
+	public void exitFsm(@NotNull FSMLParser.FsmContext ctx) {
 		if(realstatenumber!=createdstatenumber)
-			throw new InputMismatchException("Invalid target states found!");
+			throw new FSMMismatchException("Invalid target states found!"+createdstatenumber+"from"+realstatenumber);
 	}
 
-	@Override public void enterAction(FSMLParser.ActionContext ctx) { }
-	@Override public void exitAction(FSMLParser.ActionContext ctx) {
+	/**
+	 * The default implementation does nothing.
+	 */
+	@Override 
+	public void enterAction(@NotNull FSMLParser.ActionContext ctx) { }
+	
+	/**
+	 * Assigns the parsed text to action
+	 */
+	@Override 
+	public void exitAction(@NotNull FSMLParser.ActionContext ctx) { 
 		action = ctx.Name().getText();
 	}
 
-	@Override public void enterState(FSMLParser.StateContext ctx) { }
-	@Override public void exitState(FSMLParser.StateContext ctx) { 
+	/**
+	 * The default implementation does nothing.
+	 */
+	@Override 
+	public void enterState(@NotNull FSMLParser.StateContext ctx) { }
+	
+	/**
+	 * Assigns initial to the created state, resets initial and adds 1
+	 * to realstatenumber.
+	 */
+	@Override 
+	public void exitState(@NotNull FSMLParser.StateContext ctx) { 
 		state.set_initial(initial);
 		initial = false;
 		realstatenumber+=1;
 	}
 
-	@Override public void enterTransition(FSMLParser.TransitionContext ctx) {
+	/**
+	 * Assigns the created state to alphaState and omegaState since a 
+	 * transition can only be created by giving start and end states
+	 * as parameters.
+	 */
+	@Override 
+	public void enterTransition(@NotNull FSMLParser.TransitionContext ctx) {
 		alphaState = state;
 		omegaState = state;
 	}
-	@Override public void exitTransition(FSMLParser.TransitionContext ctx) {
+	
+	/**
+	 * Creates a transition and assigns its attributes. Resets input and action.
+	 */
+	@Override 
+	public void exitTransition(@NotNull FSMLParser.TransitionContext ctx) {
 		transition = graph.createTransition(alphaState, omegaState);
 		transition.set_action(action);
 		transition.set_input(input);
@@ -100,11 +184,39 @@ public class FSMLBaseListener implements FSMLListener {
 		action = "";
 	}
 
-	@Override public void enterEveryRule(ParserRuleContext ctx) { }
-	@Override public void exitEveryRule(ParserRuleContext ctx) { }
-	@Override public void visitTerminal(TerminalNode node) { }
-	@Override public void visitErrorNode(ErrorNode node) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterEveryRule(@NotNull ParserRuleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitEveryRule(@NotNull ParserRuleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void visitTerminal(@NotNull TerminalNode node) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void visitErrorNode(@NotNull ErrorNode node) { 
+		int a = node.getSourceInterval().a;
+		int b = node.getSourceInterval().b;
+		throw new FSMMismatchException("A parsing error occured. a="+a+", b="+b);
+	}
 	
+	/**
+	 * Returns the schemagraph-object
+	 * @return
+	 */
 	public FSMLSchemaGraph getGraph() {
 		return graph;
 	}

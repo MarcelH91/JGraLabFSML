@@ -71,14 +71,12 @@ public class GraphViz
    /**
     * The dir. where temporary files will be created.
     */
-   private static String TEMP_DIR = "D:/Uni/mifa/Implementation/FSML/tmp";	// Linux
- //  private static String TEMP_DIR = "c:/temp";	// Windows
+   private String tempDir;
 
    /**
     * Where is your dot program located? It will be called externally.
     */
-//   private static String DOT = "/usr/bin/dot";	// Linux
-   private static String DOT = "D:/Utilities/Graphviz2.30/bin/dot.exe";	// Windows
+   private String dotLocation;	
 
    /**
     * The source of the graph written in dot language.
@@ -89,7 +87,9 @@ public class GraphViz
     * Constructor: creates a new GraphViz object that will contain
     * a graph.
     */
-   public GraphViz() {
+   public GraphViz(String dotloc, String temploc) {
+	   setDOT(dotloc);
+	   setTEMP_DIR(temploc);
    }
 
    /**
@@ -141,7 +141,7 @@ public class GraphViz
                System.err.println("Warning: " + dot.getAbsolutePath() + " could not be deleted!");
             return img_stream;
          }else
-        	 System.err.println("here2");
+        	 System.err.println("Error while writing to"+ dot_source);
          return null; 
       } catch (java.io.IOException ioe) { return null; }
    }
@@ -169,7 +169,7 @@ public class GraphViz
       try {
          FileOutputStream fos = new FileOutputStream(to);
          if(null==img)
-        	 System.err.println("here");
+        	 System.err.println("Error while writing to: "+to.getAbsolutePath());
          fos.write(img);
          fos.close();
       } catch (java.io.IOException ioe) { return -1; }
@@ -189,11 +189,11 @@ public class GraphViz
       byte[] img_stream = null;
 
       try {
-         img = File.createTempFile("graph_", "."+type, new File(GraphViz.TEMP_DIR));
+         img = File.createTempFile("graph_", "."+type, new File(tempDir));
          Runtime rt = Runtime.getRuntime();
          
          // patch by Mike Chenault
-         String[] args = {DOT, "-T"+type, dot.getAbsolutePath(), "-o", img.getAbsolutePath()};
+         String[] args = {dotLocation, "-T"+type, dot.getAbsolutePath(), "-o", img.getAbsolutePath()};
          Process p = rt.exec(args);
          
          p.waitFor();
@@ -208,7 +208,7 @@ public class GraphViz
             System.err.println("Warning: " + img.getAbsolutePath() + " could not be deleted!");
       }
       catch (java.io.IOException ioe) {
-         System.err.println("Error:    in I/O processing of tempfile in dir " + GraphViz.TEMP_DIR+"\n");
+         System.err.println("Error:    in I/O processing of tempfile in dir " + tempDir+"\n");
          System.err.println("       or in calling external command");
          ioe.printStackTrace();
       }
@@ -228,10 +228,12 @@ public class GraphViz
     */
    private File writeDotSourceToFile(String str) throws java.io.IOException
    {
-      File temp;
+	  
+	  File tempFolder = new File(tempDir);
+      File temp ;
       try {
-    	  
-         temp = File.createTempFile("graph_", ".dot.tmp", new File(GraphViz.TEMP_DIR));
+         temp = File.createTempFile("graph_", ".dot.tmp", tempFolder);
+         
          FileWriter fout = new FileWriter(temp);
          fout.write(str);
          fout.close();
@@ -286,6 +288,34 @@ public class GraphViz
 	   
 	   this.graph = sb;
    }
+
+/**
+ * @return the tEMP_DIR
+ */
+public String getTEMP_DIR() {
+	return tempDir;
+}
+
+/**
+ * @param tEMP_DIR the tEMP_DIR to set
+ */
+public void setTEMP_DIR(String tEMP_DIR) {
+	tempDir = tEMP_DIR;
+}
+
+/**
+ * @return the dOT
+ */
+public String getDOT() {
+	return dotLocation;
+}
+
+/**
+ * @param dOT the dOT to set
+ */
+public void setDOT(String dOT) {
+	dotLocation = dOT;
+}
    
 } // end of class GraphViz
 

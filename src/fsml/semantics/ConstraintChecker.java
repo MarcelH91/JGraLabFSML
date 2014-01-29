@@ -1,22 +1,34 @@
 package fsml.semantics;
 
+import java.util.ArrayList;
+
 import de.uni_koblenz.jgralab.Graph;
-import de.uni_koblenz.jgralab.GraphElement;
 import de.uni_koblenz.jgralab.greql.GreqlQuery;
 import de.uni_koblenz.jgralab.greql.evaluator.GreqlEnvironmentAdapter;
 import de.uni_koblenz.jgralab.greql.evaluator.GreqlQueryImpl;
+import fsml.exception.FSMConstraintCheckException;
+import fsml.exception.FSMInputMismatchException;
 
 public class ConstraintChecker {
 
-	public ConstraintChecker(){
-		
+	
+	public void run(Graph fsmGraph, ArrayList<String> input){
+		if(!checkAllConstraints(fsmGraph))
+			throw new FSMConstraintCheckException("The FSMSchemaGraph isn't well formed");
+		for(String i : input){
+			String cstr = "exists trans : E{Transition}@ trans.input = \""+i+"\"";
+			if(!checkGraphConstraint(fsmGraph, cstr))
+				throw new FSMInputMismatchException("The input contains invalid elements");
+		}
 	}
 	
+	/**
+	 * Checks the graph concerning every constrained, which was specified.
+	 * @param graph
+	 * @return
+	 */
 	public boolean checkAllConstraints(Graph graph){
 		
-		//using student1, student2, lecture1: not(exists lecturex : V{Lecture} 
-		//@ student1-->{Visits} lecturex and student2 -->{Visits} lecturex 
-		//and lecturex <> lecture1);
 		
 		//Id Resolvability
 		String cstr = "not(exists state : V{State} @ state.id = '' ) and "

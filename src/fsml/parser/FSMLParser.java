@@ -1,5 +1,5 @@
 package fsml.parser;
-// Generated from FSML.egl by ANTLR 4.0
+// Generated from FSML.g by ANTLR 4.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -15,10 +15,10 @@ public class FSMLParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__6=1, T__5=2, T__4=3, T__3=4, T__2=5, T__1=6, T__0=7, Name=8;
+		T__6=1, T__5=2, T__4=3, T__3=4, T__2=5, T__1=6, T__0=7, Name=8, WS=9;
 	public static final String[] tokenNames = {
 		"<INVALID>", "'->'", "'initial'", "'{'", "'/'", "'}'", "';'", "'state'", 
-		"Name"
+		"Name", "WS"
 	};
 	public static final int
 		RULE_fsm = 0, RULE_state = 1, RULE_initial = 2, RULE_transition = 3, RULE_id = 4, 
@@ -28,7 +28,7 @@ public class FSMLParser extends Parser {
 	};
 
 	@Override
-	public String getGrammarFileName() { return "FSML.egl"; }
+	public String getGrammarFileName() { return "FSML.g"; }
 
 	@Override
 	public String[] getTokenNames() { return tokenNames; }
@@ -44,11 +44,11 @@ public class FSMLParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class FsmContext extends ParserRuleContext {
-		public StateContext state(int i) {
-			return getRuleContext(StateContext.class,i);
-		}
 		public List<StateContext> state() {
 			return getRuleContexts(StateContext.class);
+		}
+		public StateContext state(int i) {
+			return getRuleContext(StateContext.class,i);
 		}
 		public FsmContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -101,14 +101,14 @@ public class FSMLParser extends Parser {
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
-		public InitialContext initial() {
-			return getRuleContext(InitialContext.class,0);
-		}
 		public TransitionContext transition(int i) {
 			return getRuleContext(TransitionContext.class,i);
 		}
 		public List<TransitionContext> transition() {
 			return getRuleContexts(TransitionContext.class);
+		}
+		public InitialContext initial() {
+			return getRuleContext(InitialContext.class,0);
 		}
 		public StateContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -208,11 +208,11 @@ public class FSMLParser extends Parser {
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
-		public InputContext input() {
-			return getRuleContext(InputContext.class,0);
-		}
 		public ActionContext action() {
 			return getRuleContext(ActionContext.class,0);
+		}
+		public InputContext input() {
+			return getRuleContext(InputContext.class,0);
 		}
 		public TransitionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -377,23 +377,26 @@ public class FSMLParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\2\3\n8\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\7"+
-		"\2\22\n\2\f\2\16\2\25\13\2\3\3\5\3\30\n\3\3\3\3\3\3\3\3\3\7\3\36\n\3\f"+
-		"\3\16\3!\13\3\3\3\3\3\3\4\3\4\3\5\3\5\3\5\5\5*\n\5\3\5\3\5\5\5.\n\5\3"+
-		"\5\3\5\3\6\3\6\3\7\3\7\3\b\3\b\3\b\2\t\2\4\6\b\n\f\16\2\2\65\2\23\3\2"+
-		"\2\2\4\27\3\2\2\2\6$\3\2\2\2\b&\3\2\2\2\n\61\3\2\2\2\f\63\3\2\2\2\16\65"+
-		"\3\2\2\2\20\22\5\4\3\2\21\20\3\2\2\2\22\25\3\2\2\2\23\21\3\2\2\2\23\24"+
-		"\3\2\2\2\24\3\3\2\2\2\25\23\3\2\2\2\26\30\5\6\4\2\27\26\3\2\2\2\27\30"+
-		"\3\2\2\2\30\31\3\2\2\2\31\32\7\t\2\2\32\33\5\n\6\2\33\37\7\5\2\2\34\36"+
-		"\5\b\5\2\35\34\3\2\2\2\36!\3\2\2\2\37\35\3\2\2\2\37 \3\2\2\2 \"\3\2\2"+
-		"\2!\37\3\2\2\2\"#\7\7\2\2#\5\3\2\2\2$%\7\4\2\2%\7\3\2\2\2&)\5\f\7\2\'"+
-		"(\7\6\2\2(*\5\16\b\2)\'\3\2\2\2)*\3\2\2\2*-\3\2\2\2+,\7\3\2\2,.\5\n\6"+
-		"\2-+\3\2\2\2-.\3\2\2\2./\3\2\2\2/\60\7\b\2\2\60\t\3\2\2\2\61\62\7\n\2"+
-		"\2\62\13\3\2\2\2\63\64\7\n\2\2\64\r\3\2\2\2\65\66\7\n\2\2\66\17\3\2\2"+
-		"\2\7\23\27\37)-";
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\138\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\7\2\22\n\2\f\2\16\2\25"+
+		"\13\2\3\3\5\3\30\n\3\3\3\3\3\3\3\3\3\7\3\36\n\3\f\3\16\3!\13\3\3\3\3\3"+
+		"\3\4\3\4\3\5\3\5\3\5\5\5*\n\5\3\5\3\5\5\5.\n\5\3\5\3\5\3\6\3\6\3\7\3\7"+
+		"\3\b\3\b\3\b\2\t\2\4\6\b\n\f\16\2\2\65\2\23\3\2\2\2\4\27\3\2\2\2\6$\3"+
+		"\2\2\2\b&\3\2\2\2\n\61\3\2\2\2\f\63\3\2\2\2\16\65\3\2\2\2\20\22\5\4\3"+
+		"\2\21\20\3\2\2\2\22\25\3\2\2\2\23\21\3\2\2\2\23\24\3\2\2\2\24\3\3\2\2"+
+		"\2\25\23\3\2\2\2\26\30\5\6\4\2\27\26\3\2\2\2\27\30\3\2\2\2\30\31\3\2\2"+
+		"\2\31\32\7\t\2\2\32\33\5\n\6\2\33\37\7\5\2\2\34\36\5\b\5\2\35\34\3\2\2"+
+		"\2\36!\3\2\2\2\37\35\3\2\2\2\37 \3\2\2\2 \"\3\2\2\2!\37\3\2\2\2\"#\7\7"+
+		"\2\2#\5\3\2\2\2$%\7\4\2\2%\7\3\2\2\2&)\5\f\7\2\'(\7\6\2\2(*\5\16\b\2)"+
+		"\'\3\2\2\2)*\3\2\2\2*-\3\2\2\2+,\7\3\2\2,.\5\n\6\2-+\3\2\2\2-.\3\2\2\2"+
+		"./\3\2\2\2/\60\7\b\2\2\60\t\3\2\2\2\61\62\7\n\2\2\62\13\3\2\2\2\63\64"+
+		"\7\n\2\2\64\r\3\2\2\2\65\66\7\n\2\2\66\17\3\2\2\2\7\23\27\37)-";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());
 	static {
 		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
+		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
+			_decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
+		}
 	}
 }
