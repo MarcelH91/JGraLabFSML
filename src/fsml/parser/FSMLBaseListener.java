@@ -116,6 +116,7 @@ public class FSMLBaseListener implements FSMLListener {
 		graph = schema.createFSMLSchemaGraph(ImplementationType.STANDARD);
 		stateMap = new HashMap<String, State>();
 		input = "";
+		action = "";
 		createdstatenumber = 0;
 		realstatenumber = 0;
 	}
